@@ -5,8 +5,40 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        table,thead, tbody, tr, td,th{
+            border: 1px solid black;
+        }
+    </style>
 </head>
 <body>
-    <script src="main.js">   </script>
+    <script defer src="main.js"></script>
+    <div>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Views</th>
+                </tr>
+            </thead>
+            <tbody id="body">
+                
+            </tbody>
+        </table>
+    </div>
+    <div>
+        <p>ID</p>
+        <input type="text" id="id">
+    </div>
+    <div>
+        <p>TITLE</p>
+        <input type="text" id="title">
+    </div>
+    <div>
+        <p>VIEWS</p>
+        <input type="text" id="views">
+    </div>
+    <button onclick="Save();return false;">Save</button>
 </body>
 </html>
