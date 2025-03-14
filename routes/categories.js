@@ -1,19 +1,19 @@
 var express = require('express');
 var router = express.Router();
-let productSchema = require('../schemas/product')
+let categorySchema = require('../schemas/category')
 
 /* GET users listing. */
 router.get('/', async function(req, res, next) {
-    let products = await productSchema.find({});
-    res.send(products);
+    let categories = await categorySchema.find({});
+    res.send(categories);
 });
 
 router.get('/:id', async function(req, res, next) {
     try {
-        let product = await productSchema.findById(req.params.id);
+        let category = await categorySchema.findById(req.params.id);
         res.send({
             success:true,
-            data:product
+            data:category
         });
     } catch (error) {
         res.status(404).send({
@@ -25,16 +25,13 @@ router.get('/:id', async function(req, res, next) {
 router.post('/', async function(req, res, next) {
     try {
         let body = req.body;
-        let newProduct = productSchema({
-            name:body.name,
-            price:body.price?body.price:1000,
-            quantity:body.quantity?body.quantity:10,
-            category: body.category
+        let newCategory = categorySchema({
+            name:body.name
         });
-        await newProduct.save()
+        await newCategory.save()
         res.status(200).send({
             success:true,
-            data:newProduct
+            data:newCategory
         });
     } catch (error) {
         res.status(404).send({
@@ -51,19 +48,10 @@ router.put('/:id', async function(req, res, next) {
         if(body.name){
             updatedObj.name = body.name
         }
-        if(body.quantity){
-            updatedObj.quantity = body.quantity
-        }
-        if(body.price){
-            updatedObj.price = body.price
-        }
-        if(body.category){
-            updatedObj.category = body.category
-        }
-        let updatedProduct =  await productSchema.findByIdAndUpdate(req.params.id,updatedObj,{new:true})
+        let updatedCategory =  await categorySchema.findByIdAndUpdate(req.params.id,updatedObj,{new:true})
         res.status(200).send({
             success:true,
-            data:updatedProduct
+            data:updatedCategory
         });
     } catch (error) {
         res.status(404).send({
@@ -75,12 +63,12 @@ router.put('/:id', async function(req, res, next) {
 router.delete('/:id', async function(req, res, next) {
     try {
         let body = req.body;
-        let updatedProduct =  await productSchema.findByIdAndUpdate(req.params.id,{
+        let updatedCategory =  await categorySchema.findByIdAndUpdate(req.params.id,{
             isDeleted:true
         },{new:true})
         res.status(200).send({
             success:true,
-            data:updatedProduct
+            data:updatedCategory
         });
     } catch (error) {
         res.status(404).send({
