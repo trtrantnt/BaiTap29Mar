@@ -7,6 +7,7 @@ let { CreateSuccessResponse, CreateErrorResponse } = require('../utils/responseH
 
 /* GET users listing. */
 router.get('/', async function (req, res, next) {
+  console.log(req.headers.authorization);
   let users = await userController.GetAllUser();
   CreateSuccessResponse(res, 200, users)
 });
@@ -22,10 +23,10 @@ router.post('/', async function (req, res, next) {
 router.put('/:id', async function (req, res, next) {
   try {
     let body = req.body;
-    let updatedResult = await userController.UpdateAnUser(req.params.id,body);
+    let updatedResult = await userController.UpdateAnUser(req.params.id, body);
     CreateSuccessResponse(res, 200, updatedResult)
   } catch (error) {
-    CreateErrorResponse(res, 404, error.message)
+    next(error)
   }
 });
 

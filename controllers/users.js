@@ -5,6 +5,9 @@ module.exports = {
   GetAllUser: async function () {
     return await userSchema.find({}).populate('role')
   },
+  GetUserByID: async function (id) {
+    return await userSchema.findById(id).populate('role')
+  },
   CreateAnUser: async function (username, password, email, role) {
     try {
       let roleObj = await roleSchema.findOne({
@@ -40,5 +43,19 @@ module.exports = {
       , {
         new: true
       });
+  },
+  CheckLogin: async function (username, password) {
+    let user = await userSchema.findOne({
+      username: username
+    });
+    if (!user) {
+      throw new Error("username hoac password khong dung")
+    } else {
+      if (bcrypt.compareSync(password, user.password)) {
+        return user._id
+      } else {
+        throw new Error("username hoac password khong dung")
+      }
+    }
   }
 }
