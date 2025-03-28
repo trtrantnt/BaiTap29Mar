@@ -35,6 +35,8 @@ let userSchema = new mongoose.Schema({
         ref: 'role',
         required: true
     },
+    resetPasswordToken: String,
+    resetPasswordTokenExp: Date
 }, {
     timestamps: true
 })

@@ -3,10 +3,12 @@ var express = require('express');
 var router = express.Router();
 let userController = require('../controllers/users')
 let { CreateSuccessResponse, CreateErrorResponse } = require('../utils/responseHandler')
-
+let{check_authentication,check_authorization} = require('../utils/check_auth');
+const constants = require('../utils/constants');
 
 /* GET users listing. */
-router.get('/', async function (req, res, next) {
+
+router.get('/',check_authentication,check_authorization(constants.MOD_PERMISSION), async function (req, res, next) {
   console.log(req.headers.authorization);
   let users = await userController.GetAllUser();
   CreateSuccessResponse(res, 200, users)

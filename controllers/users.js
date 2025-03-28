@@ -8,6 +8,16 @@ module.exports = {
   GetUserByID: async function (id) {
     return await userSchema.findById(id).populate('role')
   },
+  GetUserByEmail: async function (email) {
+    return await userSchema.findOne({
+      email:email
+    }).populate('role')
+  },
+  GetUserByToken: async function (token) {
+    return await userSchema.findOne({
+      resetPasswordToken:token
+    }).populate('role')
+  },
   CreateAnUser: async function (username, password, email, role) {
     try {
       let roleObj = await roleSchema.findOne({
@@ -56,6 +66,16 @@ module.exports = {
       } else {
         throw new Error("username hoac password khong dung")
       }
+    }
+  },
+  Change_Password: async function (user, oldpassword, newpassword) {
+    if (bcrypt.compareSync(oldpassword, user.password)) {
+        //doit pass
+        user.password = newpassword;
+        await user.save();
+    }
+    else{
+      throw new Error("oldpassword khong dung")
     }
   }
 }
