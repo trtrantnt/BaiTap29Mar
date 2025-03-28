@@ -4,8 +4,8 @@ const transporter = nodemailer.createTransport({
     port: 25,
     secure: false, 
     auth: {
-      user: "7d741ef320b345",
-      pass: "d93c5cdae00916",
+      user: "",
+      pass: "",
     },
   });
 module.exports = {
