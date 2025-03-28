@@ -20,7 +20,7 @@ router.get('/', async function (req, res, next) {
         let token = authorizedtoken.split(" ")[1];
         let result = jwt.verify(token, constants.SECRET_KEY);
         if (result.exp > Date.now()) {
-          let user = userController.GetUserByID(result.id);
+          let user = await userController.GetUserByID(result.id);
           console.log(user);
         } else {
           throw new Error("ban chua dang nhap");
