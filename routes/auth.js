@@ -7,18 +7,20 @@ let constants = require('../utils/constants')
 let { check_authentication } = require('../utils/check_auth')
 let crypto = require('crypto')
 let mailer = require('../utils/mailer')
+let {SignUpValidator,LoginValidator,validate} = require('../utils/validator')
 
-router.post('/signup', async function (req, res, next) {
-    try {
-        let newUser = await userController.CreateAnUser(
-            req.body.username, req.body.password, req.body.email, 'user'
-        )
-        CreateSuccessResponse(res, 200, newUser)
-    } catch (error) {
-        next(error)
-    }
-});
-router.post('/login', async function (req, res, next) {
+
+router.post('/signup',SignUpValidator,validate, async function (req, res, next) {
+        try {
+            let newUser = await userController.CreateAnUser(
+                req.body.username, req.body.password, req.body.email, 'user'
+            )
+            CreateSuccessResponse(res, 200, newUser)
+        } catch (error) {
+            next(error)
+        }
+    });
+router.post('/login',LoginValidator,validate, async function (req, res, next) {
     try {
         let user_id = await userController.CheckLogin(
             req.body.username, req.body.password
@@ -55,7 +57,7 @@ router.post('/forgotpassword', async function (req, res, next) {
         user.resetPasswordTokenExp = (new Date(Date.now() + 10 * 60 * 1000));
         await user.save();
         let url = 'http://localhost:3000/auth/resetpassword/' + user.resetPasswordToken;
-        await mailer.sendMailForgotPassword(user.email,url);
+        await mailer.sendMailForgotPassword(user.email, url);
         CreateSuccessResponse(res, 200, url)
     } catch (error) {
         next(error)
